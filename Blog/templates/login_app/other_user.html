@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+
+
+{% block body_block %}
+<style>
+    tr.round1{
+        border: 2px solid white;
+        border-radius: 12px;
+    }
+
+      table.round2{
+        border: 2px solid #1cc9b5;
+        border-radius: 12px;
+        background-color:lightgreen
+    }
+
+
+</style>
+<div class="row">
+  <div class="col-sm-4">
+    {% if other_user.user_profile.profile_pic %}
+    <img src="/media/{{other_user.user_profile.profile_pic}}" width="250px" height="250px" class="rounded-circle">
+    {% else %}
+    <img src="/media/profile_pics/p.png" width="250px" height="250px" class="rounded-circle">
+    {% endif %}
+  </div>
+  <div class="col-sm-8">
+    <h1>{{other_user.username}} &nbsp;
+      {% if not already_followed %}
+      <a href="{% url 'login_app:follow' username=other_user.username %}" class="btn btn-primary">Follow</a>
+      {% else %}
+      <a href="{% url 'login_app:unfollow' username=other_user.username %}" class="btn btn-primary">Unfollow</a>
+      {% endif %}
+    </h1>
+    <br>
+    <h4>
+    Following  <img src="/media/following1.png"width="30px" height="20px"> : {{other_user.Follower.count }}
+    Followers  <img src="/media/follower.png"width="30px" height="20px"> :  {{other_user.Following.count }} </h4>
+    <br>
+      <table class="round2" border="1px" width="100%">
+<tr class="round1">
+      <th>Name</th>
+    <td>{{other_user.first_name}}  {{ other_user.last_name }}</td></tr>
+          <tr class="round1">
+          <th>Date Of Birth:</th>
+          <td>{{other_user.dob }}</td>
+          </tr>
+{% if  other_user.facebook_profile %}
+          <tr class="round1">
+              <th>Social Media Profiles</th>
+
+      <td><a href="{{other_user.facebook_profile}}">Facebook Profile</a></td>
+     {% endif %}
+      {% if  other_user.github_profile %}
+      <td> <a href="{{other_user.github_profile}}">Github Profile</a></td>
+     {% endif %}
+      {% if  other_user.linkedin_profile %}
+      <td> <a href="{{other_user.linkedin_profile}}">Linked-IN Profile</a></td>
+{% endif %}
+              </tr>
+{% if not other_user.is_staff %}
+          <tr class="round1">
+              <th> Staff Stauts </th>
+      <td><img src='/media/no.gif' class="rounded-circle" width="40px"> </td>
+      {% else %}
+      <td><img src='/media/yes.gif' class="rounded-circle" width="40px"></td>
+{% endif %}
+</tr>
+          <tr class="round1">
+    <th> User Active status </th>
+     {% if not user.is_active %}
+      <td> <img src="/media/inactive.jpg" width="15px"> Not an Active user!  </td>
+      {% else %}
+      <td> <img src="/media/active.jpg" width="15px"> An Active user </td>
+{% endif %}
+
+          </tr>
+          <tr class="round1">
+              <th>Last Login Status </th>
+      <td>  {{ other_user.last_login}}</td>
+      </tr>
+      </table>
+
+  </div>
+    {% if not blogs %}
+    <h3><img src="/media/noblogs.gif" width="400px"></h3>
+    {% else %}
+    <h3>{{ other_user.username }}'s Posted Blogs:</h3>
+    {% endif %}
+</div>
+<hr>
+<br>
+
+<h3></h3>
+{% for blog in blogs %}
+
+<h3>{{blog.blog_title}}</h3>
+<h6>{{blog.publish_date}}</h6>
+<div class="row">
+  <div class="col-sm-4">
+    <img src="/media/{{blog.blog_image}}" width="100%">
+  </div>
+  <div class="col-sm-8">
+
+    <a href="{% url 'blog_app:blog_details' slug=blog.slug %}">Read More</a>
+  </div>
+</div>
+
+<hr>
+
+{% endfor %}
+{% endblock %}

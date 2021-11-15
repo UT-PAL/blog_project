@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+
+{% block body_block %}
+<p> Your search results for <b>{{ keyword }} </b> are : </p>
+{% for user in request_username %}
+
+<a href="{% url 'login_app:other_user' username=user %}">{{user}}</a></br>
+{% endfor %}
+{% for blog in blogs %}
+
+<h3>{{blog.blog_title}}</h3>
+<h6><i>{{blog.publish_date}}</i></h6>
+<div class="row">
+  <div class="col-sm-4">
+    <img src="/media/{{blog.blog_image}}"  title="{{blog.blog_title}}" width="100%">
+  </div>
+  <div class="col-sm-8">
+
+      <a href="{% url 'blog_app:blog_details' slug=blog.slug %}">Read More</a>
+
+    <h6>Posted By: <a href="{% url 'login_app:other_user' username=blog.author %}"> @{{blog.author}}</a></h6>
+
+    <h6>{{blog.liked_blog.count}} Likes | {{blog.disliked_blog.count}} Dislikes | {{blog.blog_comment.count }} Comments </h6>
+  </div>
+</div>
+<hr>
+{% endfor %}
+{% endblock %}

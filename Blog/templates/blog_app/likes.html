@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title_block %} {{blog.blog_title}} {% endblock %}
+{% block body_block %}
+<html>
+{% if  liker %}
+<h2>Likes <img src="/media/like1.ico" width="30px"></h2>
+{% for l in liker %}
+<h5> <a href="{% url 'login_app:other_user' username=l.user %}">{{ l.user }}</a> </h5>
+{% endfor %}
+{%endif%}
+
+
+
+
+{% if  disliker %}
+<h2>Dislikes <img src="/media/unlike.png" width="30px"></h2>
+{% for d in disliker %}
+
+<h5><a href="{% url 'login_app:other_user' username=d.user %}">{{ d.user }}</a></h5>
+{% endfor %}
+{% endif %}
+
+
+</html>
+
+
+{% endblock %}

@@ -1,0 +1,145 @@
+{% extends 'base.html' %}
+{% block title_block %} User Profile {% endblock %}
+{% block body_block %}
+
+<style>
+    tr.round1{
+        border: 2px solid white;
+        border-radius: 12px;
+    }
+
+      table.round2{
+        border: 2px solid #1cc9b5;
+        border-radius: 12px;
+        background-color:lightgreen
+    }
+
+
+</style>
+
+
+
+
+<h1>{{ user.username}}'s  Profile </h1>
+{% if user.user_profile.profile_pic %}
+<img src='/media/{{user.user_profile.profile_pic}}' class="rounded-circle" width="100px">
+ {% else %}
+    <img src="/media/profile_pics/p.png" width="250px" height="250px" class="rounded-circle">
+
+<br>
+
+
+{% endif %}
+<h4></h4>
+<h5>
+    Following <img src="/media/following1.png"width="30px" height="20px"> : <a href="{% url 'login_app:show_following' %}"> {{user.Follower.count }}</a>
+
+    {% for l in list1 %}
+
+{{ l.following }}
+{% endfor %}
+
+
+   Followers <img src="/media/follower.png" width="30px" height="25px"> :  <a href="{% url 'login_app:show_follower' %}">{{user.Following.count }} </a>
+
+
+{% for l in list %}
+
+{{ l.follower }}
+{% endfor %}
+</h5>
+
+
+
+
+
+    <br>
+<table class="round2" border="1px" width="100%">
+    <tr class="round1"><th>Name</th>
+        <td class="round2"> {{user.first_name}}  {{ user.last_name }}</td>
+    </tr>
+
+   <tr class="round1"><th>Email </th>
+       <td>{{ user.email }}</td> </tr>
+    <tr class="round1">
+        <th>
+        Date OF Birth
+    </th>
+    <td> Date Of Birth: {{user.user_profile.dob }}</td>
+    </tr>
+<tr class="round1">
+{% if  user.user_profile.facebook_profile %}
+    <th>Social Media Profiles </th>
+    <td><a href="{{user.user_profile.facebook_profile}}"><img src='/media/fb.png' class="rounded-circle" width="50px"></a>
+     {% endif %}
+
+
+      {% if  user.user_profile.github_profile %}
+      <a href="{{user.user_profile.github_profile}}"><img src='/media/github.png' class="rounded-circle" width="50px"></a>
+     {% endif %}
+      {% if  user.user_profile.linkedin_profile %}
+      <a href="{{user.user_profile.linkedin_profile}}"><img src='/media/linkedin1.gif' class="rounded-circle" width="55px"></a></h6>
+{% endif %}
+    </td>
+    </tr>
+    <tr class="round1">
+        <th>
+    Staff Status
+    </th>
+
+{% if not user.is_staff %}
+        <td> <img src='/media/no.gif' class="rounded-circle" width="40px"></td>
+      {% else %}
+     <td> <img src='/media/yes.gif' class="rounded-circle" width="40px">
+
+{% endif %}
+      </td>
+    </tr>
+    <tr class="round1">
+
+    <th> User Active status </th>
+     {% if not user.is_active %}
+      <td> <img src="/media/inactive.jpg" width="15px"> Not an Active user!  </td>
+      {% else %}
+      <td> <img src="/media/active.jpg" width="15px"> An Active user </td>
+{% endif %}
+
+        </tr>
+<tr class="round1">
+    <th> Last Login Status </th>
+      <td >  {{ user.last_login}}</td>
+</tr>
+
+   <tr class="round1">
+
+   <th>Edit (username,email,name,password)</th>
+<td><center><a href="{% url 'login_app:change_profile'  %}"class="btn btn-warning btn-sm" >Edit </a></center>
+</td>
+</tr>
+
+    <tr class="round1">
+        <th>
+            Edit others info( Profile picture,Date of Birth etc.)
+        </th>
+
+<td><center><a href="{% url 'login_app:edit_othersInfo'  %}"class="btn btn-warning btn-sm" > Edit </a></center>
+</td>
+    </tr>
+</table>
+{% for blog in user.post_author.all %}
+<h3>{{blog.blog_title}}</h3>
+<h6>{{blog.publish_date}}</h6>
+<div class="row">
+  <div class="col-sm-4">
+    <img src="/media/{{blog.blog_image}}" width="100%">
+  </div>
+  <div class="col-sm-8">
+
+    <a href="{% url 'blog_app:blog_details' slug=blog.slug %}">Read More</a>
+  </div>
+</div>
+
+<hr>
+
+{% endfor %}
+{% endblock %}

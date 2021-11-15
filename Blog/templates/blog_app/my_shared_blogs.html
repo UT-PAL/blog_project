@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title_block %} {% endblock %}
+{% block body_block %}
+{% load crispy_forms_tags %}
+
+<html lang="en">
+<body>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+      {% if posts.count %}
+<div class="row">
+  <div class="col-lg-6">
+    {% for post in posts.all %}
+
+
+<h4 style="color:blue"> You have shared this Post at {{ post.shared_date }} as </h4>
+
+      <h3 style="color:green">  {{ post.whats_on_mind }}</h3>
+      <h4><img src="/media/{{post.blog.blog_image}}" width="100%"></h4>
+       <h2>{{post.blog.blog_title}}</h2>
+    <h4>Posted By: @{{post.blog.author}}</h4>
+
+       <i><h6>Published On: {{post.blog.publish_date}}</h6></i>
+    <i><h6>Updated On: {{post.blog.update_date}}</h6></i>
+  </div>
+        <div class="col-sm-6">
+
+    <a href="{% url 'blog_app:blog_details' slug=post.blog.slug %}">Read More</a>
+  {% endfor %}
+        </div>
+</div>
+
+
+    {% else %}
+    <h4><img src="/media/noblogs.gif" width="500px"></h4>
+{% endif %}
+
+
+
+
+
+</body>
+</html>
+
+{% endblock %}
